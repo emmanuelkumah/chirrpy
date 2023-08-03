@@ -6,6 +6,7 @@ import Root from "./routes/root.jsx";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import ErrorPage from "./error-page.jsx";
 import Home from "./pages/Home.jsx";
+import Main from "./pages/Main-App.jsx";
 
 const router = createBrowserRouter([
   {
@@ -14,10 +15,14 @@ const router = createBrowserRouter([
     errorElement: <ErrorPage />,
     children: [
       {
-        index: true,
+        path: "/",
         element: <Home />,
       },
     ],
+  },
+  {
+    path: "/app",
+    element: <Main />,
   },
 ]);
 
