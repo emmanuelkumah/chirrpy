@@ -1,7 +1,13 @@
 import React from "react";
 
 const MainSection = () => {
-  return <div>MainSection goes here</div>;
+  return (
+    <>
+      <section>
+        <h3>How it works</h3>
+      </section>
+    </>
+  );
 };
 
 export default MainSection;
