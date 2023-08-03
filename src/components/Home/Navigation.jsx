@@ -25,14 +25,18 @@ const Navigation = () => {
         <div
           className={
             showNavItems
-              ? `block absolute top-10 left-1 bg-slate-800 w-[90%]`
-              : `hidden`
+              ? `block absolute top-10 left-1 bg-[#27213C] w-[100%]`
+              : `hidden md:block`
           }
         >
-          <ul className="flex flex-col pl-9 py-3">{menuItems}</ul>
+          <ul className="flex flex-col pl-9 py-3 md:flex-row md:space-x-9">
+            {menuItems}
+          </ul>
         </div>
-        <div onClick={showMenuIcon} className="text-2xl text-white">
-          {showNavItems ? <TfiClose /> : <AiOutlineMenu />}
+        <div className="md:hidden">
+          <div onClick={showMenuIcon} className="text-2xl text-white">
+            {showNavItems ? <TfiClose /> : <AiOutlineMenu />}
+          </div>
         </div>
       </nav>
     </>
