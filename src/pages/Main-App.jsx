@@ -1,8 +1,9 @@
 import React, { useState } from "react";
-import { FaMicrophone } from "react-icons/fa";
+import { FaMicrophone, FaMicrophoneSlash } from "react-icons/fa";
+import { TfiSave } from "react-icons/tfi";
 import ReactQuill from "react-quill";
 import "react-quill/dist/quill.snow.css";
-import Trix from "trix";
+
 import getSpeechRecognitionAPI from "../services/speechRecognition";
 
 const Main = () => {
@@ -41,35 +42,58 @@ const Main = () => {
     //get resutls
   };
 
+  const saveContentHandler = () => {
+    recognition.stop();
+    saveText(new Date().toLocaleString, transcript);
+  };
+
+  const saveText = (dateTime, content) => {
+    setStatus("content saved ");
+    localStorage.setItem("chir", content);
+  };
+
+  const displaySavedContent = () => {
+    const result = localStorage.getItem("chir");
+
+    return result;
+    console.log(result);
+  };
+
+  const library = displaySavedContent();
   return (
     <>
       <section>
-        <h2>Record voice note</h2>
-        <section>
-          <p>Saved Notes here </p>
-        </section>
-        <section>
-          <div>
-            <p>{status}</p>
-            <p>Click on the microphone icon to startrecording</p>
-          </div>
-          <button
-            className="flex bg-emerald-400 py-2 px-3 gap-2 rounded-lg"
-            onClick={startSpeechRecognitionHandler}
-          >
-            Start recording
-            <FaMicrophone />
-          </button>
+        <h2 className="text-3xl py-4">
+          Create editable content with your voice
+        </h2>
 
-          <div>
+        <section>
+          <ReactQuill theme="snow" value={transcript} />
+          <p>{status}</p>
+          <div className="flex flex-col gap-4 mt-4">
             <button
-              className="bg-red-500 py-2 px-3 gap-2 rounded-lg "
+              className="flex bg-emerald-400 py-2 px-3 gap-2 rounded-lg"
+              onClick={startSpeechRecognitionHandler}
+            >
+              Start talking
+              <FaMicrophone />
+            </button>
+            <button
+              className="flex bg-red-500 py-2 px-3 gap-2 rounded-lg "
               onClick={stopSpeechRecognitionHandler}
             >
-              Stop recogniton
+              Stop talking
+              <FaMicrophoneSlash />
+            </button>
+            <button
+              className="flex bg-amber-500 py-2 px-3 gap-2 rounded-lg"
+              onClick={saveContentHandler}
+            >
+              Save note
+              <TfiSave />
             </button>
           </div>
-          <ReactQuill theme="snow" value={transcript} />
+          <h2>{library}</h2>
         </section>
       </section>
     </>
