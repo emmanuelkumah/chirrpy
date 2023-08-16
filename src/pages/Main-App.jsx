@@ -72,11 +72,12 @@ const Main = () => {
           <p>{status}</p>
           <div className="flex flex-col gap-4 mt-4">
             <button
-              className="flex bg-emerald-400 py-2 px-3 gap-2 rounded-lg"
+              className="bg-emerald-400 py-2 px-3 gap-2 rounded-lg"
               onClick={startSpeechRecognitionHandler}
             >
-              Start talking
-              <FaMicrophone />
+              <div className="place-content-center">
+                <p>Start talking</p>
+              </div>
             </button>
             <button
               className="flex bg-red-500 py-2 px-3 gap-2 rounded-lg "
