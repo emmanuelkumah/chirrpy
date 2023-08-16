@@ -4,7 +4,7 @@ const MainSection = () => {
   return (
     <>
       <section>
-        <h3>How it works</h3>
+        <h3>Why Chirrppy</h3>
       </section>
     </>
   );

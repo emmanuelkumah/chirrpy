@@ -1,5 +1,7 @@
 import React from "react";
-import heroImg from "../../assets/heroImg.jpg";
+import heroImg from "../../assets/chirrpyHero2.jpg";
+import shape1 from "../../assets/shape1.png";
+import shape2 from "../../assets/shape2.png";
 const Hero = () => {
   return (
     <>
@@ -10,11 +12,12 @@ const Hero = () => {
               Expand accessibility, improve productivity, increase accuracy
             </h2>
             <p className="text-xl pt-8 font-secondary">
-              Chirrpy is an ai powered speech-to-text service that helps you
-              convert audio to text format swiftly.
+              Chirrpy is an ai-powered voice recognition service that help
+              people with mobility impairment write chunk of text using thier
+              voice
             </p>
             <div className="grid place-items-center mt-7 md:block">
-              <button className="bg-[#E9FFF9] rounded text-xl text-slate-900 w-[80%] md:w-[50%] py-2">
+              <button className="bg-[#E9FFF9] rounded-full text-xl text-slate-900 w-[80%] md:w-[50%] py-2">
                 Try it for free
               </button>
               <div className="flex gap-2 mt-8 text-sm">
@@ -25,7 +28,24 @@ const Hero = () => {
           </div>
         </section>
         <section>
-          <img src={heroImg} alt="Chirrpy Hero" />
+          <img
+            className="-z-30 absolute bottom-[-15%] left-2 w-[50%] h-500px"
+            src={shape2}
+          />
+
+          <div className="">
+            <img
+              className="rounded-full w-50 h-50 my-4"
+              src={heroImg}
+              alt="Chirrpy Hero"
+            />
+          </div>
+          <div className="">
+            <img
+              className="-z-40 absolute bottom-[2%] right-7 w-[50%] h-500px"
+              src={shape1}
+            />
+          </div>
         </section>
       </div>
     </>
