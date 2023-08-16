@@ -13,12 +13,7 @@ const router = createBrowserRouter([
     path: "/chirrpy/",
     element: <Root />,
     errorElement: <ErrorPage />,
-    children: [
-      { index: true, element: <Home /> },
-      { path: "products", element: <Products /> },
-      { path: "use-case", element: <UseCase /> },
-     
-    ],
+    children: [{ index: true, element: "Testing" }],
   },
   {
     path: "/chirrpy/app",
