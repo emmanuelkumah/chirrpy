@@ -10,7 +10,7 @@ import Main from "./pages/Main-App.jsx";
 
 const router = createBrowserRouter([
   {
-    path: "/",
+    path: "/chirrpy/",
     element: <Root />,
     errorElement: <ErrorPage />,
     children: [
@@ -21,7 +21,7 @@ const router = createBrowserRouter([
     ],
   },
   {
-    path: "/app",
+    path: "/chirrpy/app",
     element: <Main />,
   },
 ]);
