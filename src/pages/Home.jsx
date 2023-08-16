@@ -6,9 +6,10 @@ import Footer from "../components/Home/Footer";
 const Home = () => {
   return (
     <>
-      <Hero />
+      Testing this home page
+      {/* <Hero />
       <MainSection />
-      <Footer />
+      <Footer /> */}
     </>
   );
 };
