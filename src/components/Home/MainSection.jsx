@@ -43,15 +43,14 @@ const MainSection = () => {
         <section className="my-6">
           <div>
             <h2 className="text-3xl text-amber-400  font-heading">Use Cases</h2>
-            <p>Discover numerous ways you can Chirrpy</p>
+            <p>Discover numerous ways you can use Chirrpy</p>
           </div>
           <section className="flex flex-col">
             <div className="my-3 bg-orange-500/[0.2] rounded-lg px-4 py-6 border-t-4">
-            <div className="text-4xl text-amber-400">
+              <div className="text-4xl text-amber-400">
                 <MdRecordVoiceOver />
               </div>
               <h2 className="text-2xl  text-amber-400">
-               
                 Increase Accessibility
               </h2>
               <article className="leading-7 font-thin">
