@@ -12,9 +12,8 @@ const Hero = () => {
               Expand accessibility, improve productivity, increase accuracy
             </h2>
             <p className="text-xl pt-8 font-secondary">
-              Chirrpy is an ai-powered voice recognition service that help
-              people with mobility impairment write chunk of text using thier
-              voice
+              Chirrpy is an ai-powered voice recognition service that help users
+              write large amount of text using thier voice.🥳
             </p>
             <div className="grid place-items-center mt-7 md:block">
               <button className="bg-amber-400 rounded-full text-xl text-slate-900 w-[80%] md:w-[50%] py-2">

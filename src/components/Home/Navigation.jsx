@@ -20,12 +20,14 @@ const Navigation = () => {
     <>
       <nav className="flex justify-between">
         <div>
-          <h2 className="text-2xl">Chirrpy</h2>
+          <h2 className="text-2xl">
+            Chirr<span className="font-thin text-amber-400">py</span>
+          </h2>
         </div>
         <div
           className={
             showNavItems
-              ? `block absolute top-10 left-1 bg-[#27213C] w-[100%]`
+              ? `block absolute top-10 left-0 bg-amber-400  w-[100%]`
               : `hidden md:block`
           }
         >
