@@ -2,6 +2,7 @@ import React from "react";
 import heroImg from "../../assets/chirrpyHero2.jpg";
 import shape1 from "../../assets/shape1.png";
 import shape2 from "../../assets/shape2.png";
+import { Link } from "react-router-dom";
 const Hero = () => {
   return (
     <>
@@ -16,9 +17,11 @@ const Hero = () => {
               write large amount of text using thier voice.🥳
             </p>
             <div className="grid place-items-center mt-7 md:block">
-              <button className="bg-amber-400 rounded-full text-xl text-slate-900 w-[80%] md:w-[50%] py-2 md:mt-6">
-                Try it for free
-              </button>
+              <Link to="/chirrpy/app">
+                <button className="bg-amber-400 hover:bg-amber-500 hover:shadow-lg rounded-full text-xl text-slate-900 w-[80%] md:w-[50%] py-2 md:mt-6">
+                  Try it for free
+                </button>
+              </Link>
             </div>
           </div>
         </section>
