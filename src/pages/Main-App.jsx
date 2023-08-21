@@ -1,14 +1,42 @@
-import React, { useState } from "react";
+import React, { useState, useRef } from "react";
 import { FaMicrophone, FaMicrophoneSlash } from "react-icons/fa";
 import { TfiSave } from "react-icons/tfi";
 import ReactQuill from "react-quill";
+//import "react-quill/dist/quill.bubble.css";
 import "react-quill/dist/quill.snow.css";
 
 import getSpeechRecognitionAPI from "../services/speechRecognition";
 
 const Main = () => {
   const [transcript, setTranscript] = useState("");
-  const [status, setStatus] = useState("Waiting to hear your voice");
+  const [status, setStatus] = useState("Click the microphone to get started");
+  const [text, setText] = useState("");
+
+  console.log(text);
+
+  //React Quill
+  const modules = {
+    toolbar: [
+      [{ font: [] }],
+      [{ header: [1, 2, 3, 4, 5, 6, false] }],
+      ["bold", "italic", "underline", "strike"],
+      [{ color: [] }, { background: [] }],
+      [{ script: "sub" }, { script: "super" }],
+      ["blockquote", "code-block"],
+      [{ list: "ordered" }, { list: "bullet" }],
+      [{ indent: "-1" }, { indent: "+1" }, { align: [] }],
+      ["link", "image", "video"],
+      ["clean"],
+    ],
+  };
+
+  const defaultStyle = {
+    width: "100%",
+    height: "auto",
+    backgroundColor: "white",
+    color: "#000",
+  };
+
   const recognition = getSpeechRecognitionAPI();
 
   recognition.continous = true;
@@ -20,7 +48,7 @@ const Main = () => {
   const startSpeechRecognitionHandler = () => {
     //run on start event
     recognition.onstart = () => {
-      setStatus("Speech recognition service has started");
+      setStatus("Listening...");
     };
     recognition.start();
   };
@@ -33,10 +61,15 @@ const Main = () => {
   //error
   recognition.onerror = function (event) {
     if (event.error === "no-speech") {
-      console.log("no speech detected");
+      setStatus("no speech detected");
     }
   };
-
+  //speech end
+  recognition.onspeechend = function () {
+    setStatus(
+      "You were quiet for a while, so the voice recognition was turned off"
+    );
+  };
   const stopSpeechRecognitionHandler = () => {
     recognition.stop();
     //get resutls
@@ -60,39 +93,53 @@ const Main = () => {
   };
 
   const library = displaySavedContent();
+
+  //handle content input
+  const contentInputHandler = (content) => {
+    setText(content);
+  };
   return (
     <>
       <section>
-        <h2 className="text-3xl py-4">
+        <h2 className="text-2xl py-4">
           Create editable content with your voice
         </h2>
 
         <section>
-          <ReactQuill theme="snow" value={transcript} />
+          <ReactQuill
+            modules={modules}
+            theme="snow"
+            placeholder="Start typing or click on the mic to speak"
+            style={defaultStyle}
+            value={text}
+            onChange={contentInputHandler}
+          />
           <p>{status}</p>
-          <div className="flex flex-col gap-4 mt-4">
-            <button
-              className="bg-emerald-400 py-2 px-3 gap-2 rounded-lg"
+          <div className="flex flex-row justify-around mt-4">
+            <div
+              class="relative w-12 h-12 bg-emerald-600 rounded-full "
               onClick={startSpeechRecognitionHandler}
             >
-              <div className="place-content-center">
-                <p>Start talking</p>
-              </div>
-            </button>
-            <button
-              className="flex bg-red-500 py-2 px-3 gap-2 rounded-lg "
+              <span className="absolute top-[15%] left-[20%] text-3xl">
+                <FaMicrophone />
+              </span>
+            </div>
+            <div
+              class="relative w-12 h-12 bg-red-600 rounded-full "
               onClick={stopSpeechRecognitionHandler}
             >
-              Stop talking
-              <FaMicrophoneSlash />
-            </button>
-            <button
-              className="flex bg-amber-500 py-2 px-3 gap-2 rounded-lg"
+              <span className="absolute top-[15%] left-[20%] text-3xl">
+                <FaMicrophoneSlash />
+              </span>
+            </div>
+            <div
+              class="relative w-12 h-12 bg-emerald-400 rounded-full "
               onClick={saveContentHandler}
             >
-              Save note
-              <TfiSave />
-            </button>
+              <span className="absolute top-[15%] left-[20%] text-3xl">
+                <TfiSave />
+              </span>
+            </div>
           </div>
           <h2>{library}</h2>
         </section>
