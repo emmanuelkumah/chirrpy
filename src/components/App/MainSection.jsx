@@ -52,7 +52,9 @@ const MainSection = () => {
   };
   recognition.onresult = (e) => {
     const current = e.resultIndex;
+    console.log(current);
     const transcript = e.results[current][0].transcript;
+    //add current content to the transcript
 
     setText(transcript);
   };
@@ -93,52 +95,52 @@ const MainSection = () => {
 
   const library = displaySavedContent();
   //handle content input
-  const contentInputHandler = (editor) => {
-    setText(editor);
-  };
+
   return (
     <>
       <main className="md:flex-1">
-        <section>
-          <AppHeading />
-          <section>
-            <div className="flex flex-row justify-around my-4">
-              <div
-                class="relative w-12 h-12 bg-emerald-600 rounded-full "
-                onClick={startSpeechRecognitionHandler}
-              >
-                <span className="absolute top-[15%] left-[20%] text-3xl">
-                  <FaMicrophone />
-                </span>
-              </div>
-              <div
-                class="relative w-12 h-12 bg-red-600 rounded-full "
-                onClick={stopSpeechRecognitionHandler}
-              >
-                <span className="absolute top-[15%] left-[20%] text-3xl">
-                  <FaMicrophoneSlash />
-                </span>
-              </div>
-              <div
-                class="relative w-12 h-12 bg-emerald-400 rounded-full "
-                onClick={saveContentHandler}
-              >
-                <span className="absolute top-[15%] left-[20%] text-3xl">
-                  <TfiSave />
-                </span>
-              </div>
-            </div>
-            <ReactQuill
-              modules={modules}
-              theme="snow"
-              placeholder="Click on the mic to speak"
-              style={defaultStyle}
-              value={text}
-              onChange={contentInputHandler}
-            />
-            <p>{status}</p>
-          </section>
-        </section>
+        <AppHeading />
+        <div className="flex flex-row justify-around my-4">
+          <div
+            class="relative w-12 h-12 bg-emerald-600 rounded-full "
+            onClick={startSpeechRecognitionHandler}
+          >
+            <span className="absolute top-[15%] left-[20%] text-3xl">
+              <FaMicrophone />
+            </span>
+          </div>
+          <div
+            class="relative w-12 h-12 bg-red-600 rounded-full "
+            onClick={stopSpeechRecognitionHandler}
+          >
+            <span className="absolute top-[15%] left-[20%] text-3xl">
+              <FaMicrophoneSlash />
+            </span>
+          </div>
+          <div
+            class="relative w-12 h-12 bg-emerald-400 rounded-full "
+            onClick={saveContentHandler}
+          >
+            <span className="absolute top-[15%] left-[20%] text-3xl">
+              <TfiSave />
+            </span>
+          </div>
+        </div>
+        <div>
+          <textarea
+            name="transcript"
+            id=""
+            cols="30"
+            rows="5"
+            value={text}
+            className="text-black overflow-y-auto p-5"
+          />
+          <button className="bg-emerald-400 py-2 px-5 mt-4 rounded-lg">
+            Edit Text
+          </button>
+        </div>
+
+        <p>{status}</p>
       </main>
     </>
   );

@@ -11,6 +11,7 @@ const Library = () => {
     <div>
       <div className="pt-[25%]">
         <ReactQuill readOnly={true} theme="snow" value={result} />
+        <div>Download content</div>
       </div>
     </div>
   );
