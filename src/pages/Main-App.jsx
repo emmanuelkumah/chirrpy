@@ -12,7 +12,9 @@ const Main = () => {
   const [status, setStatus] = useState("Click the microphone to get started");
   const [text, setText] = useState("");
 
-  console.log(text);
+  //console.log(transcript);
+
+  let noteContent = "This is a demo";
 
   //React Quill
   const modules = {
@@ -50,13 +52,20 @@ const Main = () => {
     recognition.onstart = () => {
       setStatus("Listening...");
     };
+
     recognition.start();
   };
   recognition.onresult = (e) => {
     const current = e.resultIndex;
+    console.log(current);
     const transcript = e.results[current][0].transcript;
 
-    setTranscript(transcript);
+    if (text.length > 1) {
+      const updateTranscribe = text + transcript;
+      setTranscript(updateTranscribe);
+    } else {
+      setTranscript(transcript);
+    }
   };
   //error
   recognition.onerror = function (event) {
@@ -111,8 +120,9 @@ const Main = () => {
             theme="snow"
             placeholder="Start typing or click on the mic to speak"
             style={defaultStyle}
-            value={text}
+            value={transcript}
             onChange={contentInputHandler}
+            // onFocus={focus()}
           />
           <p>{status}</p>
           <div className="flex flex-row justify-around mt-4">
