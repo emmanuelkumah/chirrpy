@@ -6,7 +6,9 @@ import Root from "./routes/root.jsx";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import ErrorPage from "./error-page.jsx";
 import Home from "./pages/Home.jsx";
-import Main from "./pages/Main-App.jsx";
+
+import MainApp from "./pages/MainApp.jsx";
+import Library from "./components/Library.jsx";
 
 const router = createBrowserRouter([
   {
@@ -17,7 +19,11 @@ const router = createBrowserRouter([
   },
   {
     path: "/chirrpy/app",
-    element: <Main />,
+    element: <MainApp />,
+  },
+  {
+    path: "/chirrpy/app/library",
+    element: <Library />,
   },
 ]);
 

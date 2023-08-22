@@ -4,15 +4,13 @@ import { TfiSave } from "react-icons/tfi";
 import ReactQuill from "react-quill";
 //import "react-quill/dist/quill.bubble.css";
 import "react-quill/dist/quill.snow.css";
+import getSpeechRecognitionAPI from "../../services/speechRecognition";
+import AppHeading from "./AppHeading";
 
-import getSpeechRecognitionAPI from "../services/speechRecognition";
-import SideBar from "../components/SideBar/LeftSidebar";
-
-const Main = () => {
+const MainSection = () => {
   const [transcript, setTranscript] = useState("");
   const [status, setStatus] = useState("Click the microphone to get started");
   const [text, setText] = useState("");
-
   //React Quill
   const modules = {
     toolbar: [
@@ -94,61 +92,56 @@ const Main = () => {
   };
 
   const library = displaySavedContent();
-
   //handle content input
   const contentInputHandler = (editor) => {
     setText(editor);
   };
   return (
     <>
-      
-      
-      <section>
-        <h2 className="text-2xl py-4">
-          Create editable content with your voice
-        </h2>
-
+      <main className="md:flex-1">
         <section>
-          <ReactQuill
-            modules={modules}
-            theme="snow"
-            placeholder="Click on the mic to speak"
-            style={defaultStyle}
-            value={text}
-            onChange={contentInputHandler}
-          />
-          <p>{status}</p>
-          <div className="flex flex-row justify-around mt-4">
-            <div
-              class="relative w-12 h-12 bg-emerald-600 rounded-full "
-              onClick={startSpeechRecognitionHandler}
-            >
-              <span className="absolute top-[15%] left-[20%] text-3xl">
-                <FaMicrophone />
-              </span>
+          <AppHeading />
+          <section>
+            <div className="flex flex-row justify-around my-4">
+              <div
+                class="relative w-12 h-12 bg-emerald-600 rounded-full "
+                onClick={startSpeechRecognitionHandler}
+              >
+                <span className="absolute top-[15%] left-[20%] text-3xl">
+                  <FaMicrophone />
+                </span>
+              </div>
+              <div
+                class="relative w-12 h-12 bg-red-600 rounded-full "
+                onClick={stopSpeechRecognitionHandler}
+              >
+                <span className="absolute top-[15%] left-[20%] text-3xl">
+                  <FaMicrophoneSlash />
+                </span>
+              </div>
+              <div
+                class="relative w-12 h-12 bg-emerald-400 rounded-full "
+                onClick={saveContentHandler}
+              >
+                <span className="absolute top-[15%] left-[20%] text-3xl">
+                  <TfiSave />
+                </span>
+              </div>
             </div>
-            <div
-              class="relative w-12 h-12 bg-red-600 rounded-full "
-              onClick={stopSpeechRecognitionHandler}
-            >
-              <span className="absolute top-[15%] left-[20%] text-3xl">
-                <FaMicrophoneSlash />
-              </span>
-            </div>
-            <div
-              class="relative w-12 h-12 bg-emerald-400 rounded-full "
-              onClick={saveContentHandler}
-            >
-              <span className="absolute top-[15%] left-[20%] text-3xl">
-                <TfiSave />
-              </span>
-            </div>
-          </div>
-          <h2>{library}</h2>
+            <ReactQuill
+              modules={modules}
+              theme="snow"
+              placeholder="Click on the mic to speak"
+              style={defaultStyle}
+              value={text}
+              onChange={contentInputHandler}
+            />
+            <p>{status}</p>
+          </section>
         </section>
-      </section>
+      </main>
     </>
   );
 };
 
-export default Main;
+export default MainSection;
