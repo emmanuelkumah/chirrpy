@@ -13,8 +13,8 @@ const Main = () => {
   const [text, setText] = useState("");
 
   //console.log(transcript);
-
-  let noteContent = "This is a demo";
+  let updatedEditor;
+  let getTranscript;
 
   //React Quill
   const modules = {
@@ -58,14 +58,17 @@ const Main = () => {
   recognition.onresult = (e) => {
     const current = e.resultIndex;
     console.log(current);
-    const transcript = e.results[current][0].transcript;
 
-    if (text.length > 1) {
-      const updateTranscribe = text + transcript;
-      setTranscript(updateTranscribe);
-    } else {
-      setTranscript(transcript);
-    }
+    //noteContent = noteContent + transcript;
+
+    setText(e.results[current][0].transcript);
+
+    // if (text.length > 1) {
+    //   const updateTranscribe = text + transcript;
+    //   setTranscript(updateTranscribe);
+    // } else {
+    //   setTranscript(transcript);
+    // }
   };
   //error
   recognition.onerror = function (event) {
@@ -86,12 +89,13 @@ const Main = () => {
 
   const saveContentHandler = () => {
     recognition.stop();
-    saveText(new Date().toLocaleString, transcript);
+    saveText(new Date().toLocaleString, text);
   };
 
-  const saveText = (dateTime, content) => {
+  const saveText = (dateTime, text) => {
     setStatus("content saved ");
-    localStorage.setItem("chir", content);
+    console.log(text);
+    localStorage.setItem("chir", text);
   };
 
   const displaySavedContent = () => {
@@ -104,8 +108,11 @@ const Main = () => {
   const library = displaySavedContent();
 
   //handle content input
-  const contentInputHandler = (content) => {
-    setText(content);
+  const contentInputHandler = (editor) => {
+    console.log(editor);
+    //console.log(editor.getText());
+    //const innerContent = editor.innerText;
+    setText(editor);
   };
   return (
     <>
@@ -120,7 +127,7 @@ const Main = () => {
             theme="snow"
             placeholder="Start typing or click on the mic to speak"
             style={defaultStyle}
-            value={transcript}
+            value={text}
             onChange={contentInputHandler}
             // onFocus={focus()}
           />
