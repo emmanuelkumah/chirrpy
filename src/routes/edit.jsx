@@ -2,7 +2,7 @@ import React from "react";
 import ReactQuill from "react-quill";
 import "react-quill/dist/quill.snow.css";
 
-const Editor = () => {
+const Edit = () => {
   //React Quill
   const modules = {
     toolbar: [
@@ -27,14 +27,16 @@ const Editor = () => {
   };
   return (
     <>
-      <ReactQuill
-        modules={modules}
-        theme="snow"
-        style={defaultStyle}
-        value="Testing"
-      />
+      <div className="mt-[12%]">
+        <ReactQuill
+          modules={modules}
+          theme="snow"
+          style={defaultStyle}
+          value="Testing"
+        />
+      </div>
     </>
   );
 };
 
-export default Editor;
+export default Edit;

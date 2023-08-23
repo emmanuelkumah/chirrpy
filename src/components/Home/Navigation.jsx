@@ -1,46 +1,24 @@
-import React, { useState } from "react";
+import React from "react";
+import HamburgerDrawer from "react-hamburger-drawer";
 import menus from "../../utils/navMenus";
-import { NavLink } from "react-router-dom";
-import { AiOutlineMenu } from "react-icons/ai";
-import { TfiClose } from "react-icons/tfi";
+import { Link } from "react-router-dom";
 
-NavLink;
 const Navigation = () => {
-  const [showNavItems, setShowNavItems] = useState(false);
-  const menuItems = menus.map((menu) => (
-    <li key={menu.id} className="py-2">
-      <NavLink to={menu.path}>{menu.menuItem}</NavLink>
+  const menuItem = menus.map((item) => (
+    <li key={item.id} className="text-gray-950 text-xl">
+      <Link to={item.url}>{item.menuItem}</Link>
     </li>
   ));
-
-  const showMenuIcon = () => {
-    setShowNavItems((prevState) => !prevState);
-  };
   return (
     <>
-      <nav className="flex justify-between">
-        <div>
-          <h2 className="text-2xl">
-            Chirr<span className="font-thin text-amber-400">py</span>
-          </h2>
+      <header className="relative py-4 mb-5">
+        <HamburgerDrawer>
+          <ul className="pl-9">{menuItem}</ul>
+        </HamburgerDrawer>
+        <div className="absolute left-[30%]">
+          <h1 className="text-3xl">Chirrpy</h1>
         </div>
-        <div
-          className={
-            showNavItems
-              ? `block absolute top-10 left-0 bg-amber-400  w-[100%]`
-              : `hidden md:block`
-          }
-        >
-          <ul className="flex flex-col pl-9 py-3 md:flex-row md:space-x-9">
-            {menuItems}
-          </ul>
-        </div>
-        <div className="md:hidden">
-          <div onClick={showMenuIcon} className="text-2xl text-white">
-            {showNavItems ? <TfiClose /> : <AiOutlineMenu />}
-          </div>
-        </div>
-      </nav>
+      </header>
     </>
   );
 };

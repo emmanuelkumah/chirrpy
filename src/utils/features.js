@@ -1,6 +1,3 @@
-import { BsSpellcheck, BsSave, BsSend, BsFillMicFill } from "react-icons/bs";
-import { RiUserVoiceLine } from "react-icons/ri";
-
 const features = [
   {
     id: 1,
