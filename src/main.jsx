@@ -9,6 +9,7 @@ import Home from "./pages/Home.jsx";
 
 import MainApp from "./pages/MainApp.jsx";
 import Library from "./components/Library.jsx";
+import Editor from "./components/Editor.jsx";
 
 const router = createBrowserRouter([
   {
@@ -20,6 +21,10 @@ const router = createBrowserRouter([
   {
     path: "/chirrpy/app",
     element: <MainApp />,
+  },
+  {
+    path: "/chirrpy/app/editor",
+    element: <Editor/>
   },
   {
     path: "/chirrpy/app/library",

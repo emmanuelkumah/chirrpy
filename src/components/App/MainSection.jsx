@@ -1,44 +1,22 @@
-import React, { useState, useRef } from "react";
+import React, { useState } from "react";
 import { FaMicrophone, FaMicrophoneSlash } from "react-icons/fa";
 import { TfiSave } from "react-icons/tfi";
-import ReactQuill from "react-quill";
-//import "react-quill/dist/quill.bubble.css";
+
 import "react-quill/dist/quill.snow.css";
 import getSpeechRecognitionAPI from "../../services/speechRecognition";
 import AppHeading from "./AppHeading";
+import { Link } from "react-router-dom";
 
 const MainSection = () => {
   const [transcript, setTranscript] = useState("");
   const [status, setStatus] = useState("Click the microphone to get started");
   const [text, setText] = useState("");
-  //React Quill
-  const modules = {
-    toolbar: [
-      [{ font: [] }],
-      [{ header: [1, 2, 3, 4, 5, 6, false] }],
-      ["bold", "italic", "underline", "strike"],
-      [{ color: [] }, { background: [] }],
-      [{ script: "sub" }, { script: "super" }],
-      ["blockquote", "code-block"],
-      [{ list: "ordered" }, { list: "bullet" }],
-      [{ indent: "-1" }, { indent: "+1" }, { align: [] }],
-      ["link", "image", "video"],
-      ["clean"],
-    ],
-  };
-
-  const defaultStyle = {
-    width: "100%",
-    height: "auto",
-    backgroundColor: "white",
-    color: "#000",
-  };
 
   const recognition = getSpeechRecognitionAPI();
 
   recognition.continous = true;
   //interim result
-  recognition.interimResults = false;
+  recognition.interimResults = true;
   //language
   recognition.lang = "en-US";
 
@@ -52,10 +30,9 @@ const MainSection = () => {
   };
   recognition.onresult = (e) => {
     const current = e.resultIndex;
-    console.log(current);
     const transcript = e.results[current][0].transcript;
     //add current content to the transcript
-
+    console.log(transcript);
     setText(transcript);
   };
   //error
@@ -133,11 +110,13 @@ const MainSection = () => {
             cols="30"
             rows="5"
             value={text}
-            className="text-black overflow-y-auto p-5"
+            className="overflow-y-auto p-5 bg-transparent rounded-lg"
           />
-          <button className="bg-emerald-400 py-2 px-5 mt-4 rounded-lg">
-            Edit Text
-          </button>
+          {/* <Link to="editor">
+            <button className="bg-emerald-400 py-2 px-5 mt-4 rounded-lg">
+              Edit Text
+            </button>
+          </Link> */}
         </div>
 
         <p>{status}</p>
