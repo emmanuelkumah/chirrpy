@@ -3,7 +3,7 @@
 @tailwind base;
 @layer base {
   body {
-    @apply font-primary text-white  px-8 md:px-[5%] pt-2 min-h-screen bg-gradient-to-tr from-[#27213C]  to-[#361134];
+    @apply font-primary text-emerald-600  px-8 md:px-[5%] pt-2 min-h-screen bg-gradient-to-tr from-[#27213C]  to-[#361134];
   }
 }
 @tailwind components;

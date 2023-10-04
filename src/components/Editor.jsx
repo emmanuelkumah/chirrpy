@@ -1,10 +1,16 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useQuill } from "react-quilljs";
-import "quill/dist/quill.snow.css"; // Add css for snow theme
+import "quill/dist/quill.snow.css";
 
 const Editor = () => {
   const { quill, quillRef } = useQuill();
   const [savedText, setSavedText] = useState("");
+
+  useEffect(() => {
+    if (quill) {
+      quill.clipboard.dangerouslyPasteHTML("<h1>React Hook for Quill!</h1>");
+    }
+  }, [quill]);
 
   const handleSave = () => {
     const text = quill.getText();

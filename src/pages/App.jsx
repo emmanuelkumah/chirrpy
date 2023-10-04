@@ -2,46 +2,51 @@ import React, { useState } from "react";
 import { FaMicrophone, FaMicrophoneSlash } from "react-icons/fa";
 import { recognition } from "../services/speechRecognition";
 import { Link } from "react-router-dom";
+import { useQuill } from "react-quilljs";
+import "quill/dist/quill.snow.css";
 
 const App = () => {
   const [status, setStatus] = useState("Click the microphone to get started");
-  const [text, setText] = useState("");
+  const [content, setContent] = useState("");
 
   recognition.continous = true;
-  recognition.interimResults = true;
+  // recognition.interimResults = true;
   recognition.lang = "en-US";
 
-  const startVoiceRecongnition = () => {
-    recognition.onstart = () => {
-      setStatus("listening...");
-    };
+  recognition.onstart = () => {
+    setStatus("Voice recognition activated. Try speaking into the microphone.");
+  };
+  recognition.onspeechend = () => {
+    setStatus(
+      "You were quiet for a while so voice recognition turned itself off."
+    );
+  };
+  recognition.onerror = (e) => {
+    if (e.error === "no--speech") {
+      setStatus("No speech detected try again");
+    }
+  };
+  const startRecordingHandler = () => {
+    // if (content.length) {
+    //   content += " ";
+    // }
     recognition.start();
   };
 
+  //get resutls
   recognition.onresult = (e) => {
     const current = e.resultIndex;
     const transcript = e.results[current][0].transcript;
-
-    setText(transcript);
-  };
-  //error
-  recognition.onerror = function (event) {
-    if (event.error === "no-speech") {
-      setStatus("no speech detected");
+    const mobileRepeatBug =
+      current == 1 && transcript == e.results[0][0].transcript;
+    if (!mobileRepeatBug) {
+      setContent((content) => `${content} ${transcript}`);
     }
-  };
-  //speech end
-  recognition.onspeechend = function () {
-    setStatus(
-      "You were quiet for a while, so the voice recognition was turned off"
-    );
+    //append to content
   };
 
-  const pauseVoiceRecognition = () => {
-    recognition.onspeechend = () => {
-      recognition.stop();
-      console.log("Speech recognition has stopped.");
-    };
+  const contentChangeHandler = (e) => {
+    setContent(e.target.value);
   };
 
   return (
@@ -49,32 +54,24 @@ const App = () => {
       <section className="mt-[15%]">
         <div>
           <h3>Create notes with your voice</h3>
-        </div>
-        <div
-          className="relative bg-emerald-600 rounded-full w-20 h-20"
-          onClick={startVoiceRecongnition}
-        >
-          <span className="absolute top-6 left-6 text-3xl">
-            <FaMicrophone />
-          </span>
-        </div>
-        <div>
           <p>{status}</p>
-        </div>
-        <textarea
-          className="text-black p-4 overflow-y-auto"
-          name="transcript"
-          id=""
-          cols="30"
-          rows="10"
-          value={text}
-        />
-        <div>
-          <Link to="/chirrpy/apps/editor">
-            <button className="bg-emerald-500 py-3 px-4 rounded-md">
-              Edit Text
+          <textarea
+            name="voicenote"
+            id=""
+            cols="60"
+            rows="10"
+            value={content}
+            onChange={contentChangeHandler}
+          ></textarea>
+          <div className="flex gap-4">
+            <button
+              className="bg-emerald-400 p-5"
+              onClick={startRecordingHandler}
+            >
+              Start Recording
             </button>
-          </Link>
+            <button className="bg-red-400 p-5">Pause</button>
+          </div>
         </div>
       </section>
     </>
