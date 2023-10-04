@@ -1,12 +1,15 @@
-import React from "react";
 import Navigation from "../components/Home/Navigation";
 import { Outlet } from "react-router-dom";
+import { useState } from "react";
 
 const Root = () => {
+  // const [count, setCount] = useState(9);
+  const [content, setContent] = useState("");
+
   return (
     <>
       <Navigation />
-      <Outlet />
+      <Outlet context={[content, setContent]} />
     </>
   );
 };

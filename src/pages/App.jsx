@@ -1,17 +1,17 @@
 import React, { useState } from "react";
 import { FaMicrophone, FaMicrophoneSlash } from "react-icons/fa";
 import { recognition } from "../services/speechRecognition";
-import { Link } from "react-router-dom";
+import { Link, useOutletContext } from "react-router-dom";
 import { useQuill } from "react-quilljs";
 import "quill/dist/quill.snow.css";
 
 const App = () => {
   const [status, setStatus] = useState("Click the microphone to get started");
-  const [content, setContent] = useState("");
+  const [hasUpdated, setHasUpdated] = useState(false);
+  //get context data
+  const [content, setContent] = useOutletContext();
 
-  const savedContent = localStorage.getItem("saved");
   recognition.continous = true;
-  // recognition.interimResults = true;
   recognition.lang = "en-US";
 
   recognition.onstart = () => {
@@ -28,9 +28,6 @@ const App = () => {
     }
   };
   const startRecordingHandler = () => {
-    // if (content.length) {
-    //   content += " ";
-    // }
     recognition.start();
   };
 
@@ -50,8 +47,8 @@ const App = () => {
       current == 1 && transcript == e.results[0][0].transcript;
     if (!mobileRepeatBug) {
       setContent((content) => `${content} ${transcript}`);
+      setHasUpdated(true);
     }
-    //append to content
   };
 
   const contentChangeHandler = (e) => {
@@ -59,7 +56,7 @@ const App = () => {
   };
 
   const saveContent = () => {
-    localStorage.setItem("saved", content);
+    hasUpdated && localStorage.setItem("transcribe", content);
   };
   return (
     <>
@@ -83,12 +80,13 @@ const App = () => {
               Start Recording
             </button>
             <button className="bg-red-400 p-5">Pause</button>
-            <button className="bg-green-400" onClick={saveRecordingHandler}>
-              Save note
-            </button>
+            <Link to="editor">
+              <button className="bg-green-400" onClick={saveRecordingHandler}>
+                Save & Edit
+              </button>
+            </Link>
           </div>
         </div>
-        {savedContent}
       </section>
     </>
   );
