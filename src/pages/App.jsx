@@ -9,6 +9,7 @@ const App = () => {
   const [status, setStatus] = useState("Click the microphone to get started");
   const [content, setContent] = useState("");
 
+  const savedContent = localStorage.getItem("saved");
   recognition.continous = true;
   // recognition.interimResults = true;
   recognition.lang = "en-US";
@@ -33,6 +34,14 @@ const App = () => {
     recognition.start();
   };
 
+  const saveRecordingHandler = () => {
+    if (!content) {
+      setStatus("Could not save empty note. Please add a message");
+    }
+    recognition.stop();
+    saveContent();
+  };
+
   //get resutls
   recognition.onresult = (e) => {
     const current = e.resultIndex;
@@ -49,6 +58,9 @@ const App = () => {
     setContent(e.target.value);
   };
 
+  const saveContent = () => {
+    localStorage.setItem("saved", content);
+  };
   return (
     <>
       <section className="mt-[15%]">
@@ -71,8 +83,12 @@ const App = () => {
               Start Recording
             </button>
             <button className="bg-red-400 p-5">Pause</button>
+            <button className="bg-green-400" onClick={saveRecordingHandler}>
+              Save note
+            </button>
           </div>
         </div>
+        {savedContent}
       </section>
     </>
   );
