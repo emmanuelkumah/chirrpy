@@ -1,8 +1,8 @@
-import React, { useState } from "react";
-import { FaMicrophone, FaMicrophoneSlash } from "react-icons/fa";
+import React, { useState, useEffect } from "react";
+// import { FaMicrophone, FaMicrophoneSlash } from "react-icons/fa";
 import { recognition } from "../services/speechRecognition";
 import { Link, useOutletContext } from "react-router-dom";
-import { useQuill } from "react-quilljs";
+// import { useQuill } from "react-quilljs";
 import "quill/dist/quill.snow.css";
 
 const App = () => {
@@ -11,12 +11,19 @@ const App = () => {
   //get context data
   const [content, setContent] = useOutletContext();
 
+  useEffect(() => {
+    localStorage.setItem("details", content);
+  }, [content]);
+
   recognition.continous = true;
   recognition.lang = "en-US";
 
+  //start recognition
   recognition.onstart = () => {
     setStatus("Voice recognition activated. Try speaking into the microphone.");
   };
+
+  //end 
   recognition.onspeechend = () => {
     setStatus(
       "You were quiet for a while so voice recognition turned itself off."
@@ -36,7 +43,6 @@ const App = () => {
       setStatus("Could not save empty note. Please add a message");
     }
     recognition.stop();
-    saveContent();
   };
 
   //get resutls
@@ -51,13 +57,6 @@ const App = () => {
     }
   };
 
-  const contentChangeHandler = (e) => {
-    setContent(e.target.value);
-  };
-
-  const saveContent = () => {
-    hasUpdated && localStorage.setItem("transcribe", content);
-  };
   return (
     <>
       <section className="mt-[15%]">
@@ -70,7 +69,7 @@ const App = () => {
             cols="60"
             rows="10"
             value={content}
-            onChange={contentChangeHandler}
+            onChange={(e) => setContent(e.target.value)}
           ></textarea>
           <div className="flex gap-4">
             <button
