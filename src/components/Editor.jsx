@@ -1,8 +1,5 @@
-import React, { useState, useRef, useEffect } from "react";
-//import ReactQuill from "react-quill";
-//import "react-quill/dist/quill.snow.css";
+import React, { useState, useEffect } from "react";
 import Quill from "quill";
-
 import { pdfExporter } from "quill-to-pdf";
 
 const Editor = () => {
@@ -13,14 +10,9 @@ const Editor = () => {
   useEffect(() => {
     const quillEditor = new Quill("#quill-editor", {
       modules: {
-        toolbar: [
-          [{ header: [1, 2, false] }],
-          ["bold", "italic", "underline"],
-          ["image", "code-block"],
-        ],
+        toolbar: true,
       },
-      placeholder: "Compose an epic...",
-      theme: "snow", // or 'bubble'
+      theme: "snow",
     });
     setEditor(quillEditor);
   }, []);
@@ -35,6 +27,7 @@ const Editor = () => {
     const pdfUrl = URL.createObjectURL(pdfBlob);
     window.open(pdfUrl);
   };
+
   return (
     <>
       <div id="quill-editor">{editContent}</div>
