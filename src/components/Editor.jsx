@@ -1,36 +1,51 @@
-import React, { useState, useEffect } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import Quill from "quill";
 import { pdfExporter } from "quill-to-pdf";
 
 const Editor = () => {
   const storedContent = localStorage.getItem("details");
-  const [editContent, setEditContent] = useState(storedContent);
-  const [editor, setEditor] = useState(null);
+
+  const [content, setContent] = useState(storedContent);
+  const [quillContent, setQuillContent] = useState();
+  const editorRef = useRef(null);
+
+  const quillOptions = {
+    modules: {
+      toolbar: [
+        [{ header: [1, 2, 3, 4, 5, 6, false] }],
+        [{ font: [] }],
+        [{ size: ["small", false, "large", "huge"] }],
+        [{ color: [] }, { background: [] }],
+        [{ align: [] }],
+      ],
+    },
+    theme: "snow",
+  };
 
   useEffect(() => {
-    const quillEditor = new Quill("#quill-editor", {
-      modules: {
-        toolbar: true,
-      },
-      theme: "snow",
-    });
-    setEditor(quillEditor);
+    const editor = new Quill(editorRef.current, quillOptions);
+    editor.setContents([{ insert: content }]);
+
+    editor.on("text-change", () => handleTextChange(editor));
+
+    setQuillContent(editor);
   }, []);
 
-  //update the content in local storage
-  useEffect(() => {
-    localStorage.setItem("details", editContent);
-  }, [editContent]);
+  const handleTextChange = (editor) => {
+    setContent(editor.getContents().ops[0].insert);
+  };
 
+  //generate pdf
   const generatePDF = async () => {
-    const pdfBlob = await pdfExporter.generatePdf(editor.getContents());
+    const pdfBlob = await pdfExporter.generatePdf(quillContent.getContents());
     const pdfUrl = URL.createObjectURL(pdfBlob);
     window.open(pdfUrl);
   };
 
   return (
     <>
-      <div id="quill-editor">{editContent}</div>
+      <div ref={editorRef} />
+      <div>{content}</div>
       <button onClick={generatePDF}>Generate PDF</button>
     </>
   );

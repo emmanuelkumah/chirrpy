@@ -5,7 +5,7 @@ import { Link, useOutletContext } from "react-router-dom";
 // import { useQuill } from "react-quilljs";
 import "quill/dist/quill.snow.css";
 
-const App = () => {
+const SpeechRecogntion = () => {
   const [status, setStatus] = useState("Click the microphone to get started");
   const [hasUpdated, setHasUpdated] = useState(false);
   //get context data
@@ -23,7 +23,7 @@ const App = () => {
     setStatus("Voice recognition activated. Try speaking into the microphone.");
   };
 
-  //end 
+  //end
   recognition.onspeechend = () => {
     setStatus(
       "You were quiet for a while so voice recognition turned itself off."
@@ -91,4 +91,4 @@ const App = () => {
   );
 };
 
-export default App;
+export default SpeechRecogntion;

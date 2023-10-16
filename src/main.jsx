@@ -5,8 +5,10 @@ import Root from "./routes/root.jsx";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import ErrorPage from "./error-page.jsx";
 import Home from "./pages/Home.jsx";
-import Apps from "./routes/apps";
+// import Apps from "./routes/apps";
 import Edit from "./routes/edit";
+import ChirrpyApp from "./routes/apps";
+import TextEditor from "./routes/edit";
 
 const router = createBrowserRouter([
   {
@@ -16,12 +18,12 @@ const router = createBrowserRouter([
     children: [
       { index: true, element: <Home /> },
       {
-        path: "/chirrpy/apps",
-        element: <Apps />,
+        path: "/chirrpy/app",
+        element: <ChirrpyApp />,
       },
       {
-        path: "/chirrpy/apps/editor",
-        element: <Edit />,
+        path: "/chirrpy/app/editor",
+        element: <TextEditor />,
       },
     ],
   },

@@ -1,12 +1,12 @@
 import React from "react";
-import App from "../pages/app";
+import SpeechRecogntion from "../pages/SpeechRecognition";
 
-const Apps = () => {
+const ChirrpyApp = () => {
   return (
     <>
-      <App />
+      <SpeechRecogntion />
     </>
   );
 };
 
-export default Apps;
+export default ChirrpyApp;
