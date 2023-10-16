@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
-// import { FaMicrophone, FaMicrophoneSlash } from "react-icons/fa";
+import axios from "axios";
+
 import { recognition } from "../services/speechRecognition";
 import { Link, useOutletContext } from "react-router-dom";
 // import { useQuill } from "react-quilljs";
@@ -10,11 +11,48 @@ const SpeechRecogntion = () => {
   const [hasUpdated, setHasUpdated] = useState(false);
   //get context data
   const [content, setContent] = useOutletContext();
+  const [data, setData] = useState([]);
 
   useEffect(() => {
     localStorage.setItem("details", content);
   }, [content]);
 
+  //grammer
+  const encodedParams = new URLSearchParams();
+  encodedParams.set("text", "Him pencl is un the table");
+
+  const options = {
+    method: "POST",
+    url: "https://textgears-textgears-v1.p.rapidapi.com/grammar",
+    headers: {
+      "content-type": "application/x-www-form-urlencoded",
+      "X-RapidAPI-Key": "b83c549ad8msh7858eac60fba4c7p1c2c58jsnd1c568e3a836",
+      "X-RapidAPI-Host": "textgears-textgears-v1.p.rapidapi.com",
+    },
+    data: encodedParams,
+  };
+
+  useEffect(() => {
+    connectAPI();
+  }, []);
+
+  const connectAPI = async () => {
+    try {
+      const response = await axios.request(options);
+      //console.log(response.data.response.errors);
+
+      //const data = (response.data.response.errors);
+      setData(response.data.response.errors);
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
+  //grammar
+  //  console.log(data);
+  const fetchCorrectedGrammar = data.map((item) => item.better[0]);
+
+  console.log(fetchCorrectedGrammar.join(" "));
   recognition.continous = true;
   recognition.lang = "en-US";
 
