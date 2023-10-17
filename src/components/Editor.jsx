@@ -4,13 +4,14 @@ import { pdfExporter } from "quill-to-pdf";
 import axios from "axios";
 
 const Editor = () => {
-  const storedContent = localStorage.getItem("details");
+  const localStorageData = localStorage.getItem("details");
 
-  const [content, setContent] = useState(storedContent);
+  const [content, setContent] = useState(localStorageData);
   const [quillContent, setQuillContent] = useState();
+  // const [isCheckingErrors, setIsCheckingErrors] = useState(false);
   const editorRef = useRef(null);
 
-  const quillOptions = {
+  const editorOptions = {
     modules: {
       toolbar: [
         [{ header: [1, 2, 3, 4, 5, 6, false] }],
@@ -24,18 +25,16 @@ const Editor = () => {
   };
 
   useEffect(() => {
-    const editor = new Quill(editorRef.current, quillOptions);
+    const editor = new Quill(editorRef.current, editorOptions);
+
     editor.setContents([{ insert: content }]);
 
-    editor.on("text-change", () => handleTextChange(editor));
+    editor.on("text-change", () => handleEditorChange(editor));
 
     setQuillContent(editor);
-
-    //correnct sentene
-    // correctSentence();
   }, []);
 
-  const handleTextChange = (editor) => {
+  const handleEditorChange = (editor) => {
     setContent(editor.getContents().ops[0].insert);
   };
 
@@ -46,13 +45,14 @@ const Editor = () => {
     window.open(pdfUrl);
   };
 
+  console.log(import.meta.env.VITE_API_KEY);
   //complet options
   const options = {
     method: "POST",
     url: "https://typewise-ai.p.rapidapi.com/correction/whole_sentence",
     headers: {
       "content-type": "application/json",
-      "X-RapidAPI-Key": "b83c549ad8msh7858eac60fba4c7p1c2c58jsnd1c568e3a836",
+      "X-RapidAPI-Key": import.meta.env.VITE_API_KEY,
       "X-RapidAPI-Host": "typewise-ai.p.rapidapi.com",
     },
     data: {
@@ -66,6 +66,12 @@ const Editor = () => {
     try {
       const response = await axios.request(options);
       console.log(response.data.corrected_text);
+      const updatedText = response.data.corrected_text;
+      if (response) {
+        const editor = new Quill(editorRef.current, editorOptions);
+        editor.setContents([{ insert: updatedText }]);
+      }
+      // setContent(response.data.corrected_text);
     } catch (error) {
       console.error(error);
     }
