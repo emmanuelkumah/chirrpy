@@ -2,40 +2,40 @@ import React, { useEffect, useState, useRef } from "react";
 import Quill from "quill";
 import { pdfExporter } from "quill-to-pdf";
 import axios from "axios";
+import toolbarOptions from "../utils/editorToolbarOptions";
 
 const Editor = () => {
   const localStorageData = localStorage.getItem("details");
 
   const [content, setContent] = useState(localStorageData);
   const [quillContent, setQuillContent] = useState();
-  // const [isCheckingErrors, setIsCheckingErrors] = useState(false);
+  const [copyText, setCopyText] = useState();
   const editorRef = useRef(null);
 
-  const editorOptions = {
-    modules: {
-      toolbar: [
-        [{ header: [1, 2, 3, 4, 5, 6, false] }],
-        [{ font: [] }],
-        [{ size: ["small", false, "large", "huge"] }],
-        [{ color: [] }, { background: [] }],
-        [{ align: [] }],
-      ],
-    },
-    theme: "snow",
-  };
-
   useEffect(() => {
-    const editor = new Quill(editorRef.current, editorOptions);
-
+    const editor = new Quill(editorRef.current, {
+      modules: {
+        toolbar: toolbarOptions,
+        history: {
+          delay: 2000,
+          maxStack: 500,
+          userOnly: true,
+        },
+      },
+      theme: "snow",
+    });
     editor.setContents([{ insert: content }]);
-
     editor.on("text-change", () => handleEditorChange(editor));
-
-    setQuillContent(editor);
   }, []);
 
   const handleEditorChange = (editor) => {
     setContent(editor.getContents().ops[0].insert);
+    setQuillContent(editor);
+  };
+
+  //copy content
+  const handleCopyToClipboard = () => {
+    navigator.clipboard.writeText(content);
   };
 
   //generate pdf
@@ -45,33 +45,38 @@ const Editor = () => {
     window.open(pdfUrl);
   };
 
-  console.log(import.meta.env.VITE_API_KEY);
-  //complet options
-  const options = {
-    method: "POST",
-    url: "https://typewise-ai.p.rapidapi.com/correction/whole_sentence",
-    headers: {
-      "content-type": "application/json",
-      "X-RapidAPI-Key": import.meta.env.VITE_API_KEY,
-      "X-RapidAPI-Host": "typewise-ai.p.rapidapi.com",
-    },
-    data: {
-      text: content,
-      keyboard: "QWERTY",
-      languages: ["en"],
-    },
-  };
-
+  //correct grammar errors in editor
   const correctSentence = async () => {
     try {
-      const response = await axios.request(options);
-      console.log(response.data.corrected_text);
+      const response = await axios.request({
+        method: "POST",
+        url: "https://typewise-ai.p.rapidapi.com/correction/whole_sentence",
+        headers: {
+          "content-type": "application/json",
+          "X-RapidAPI-Key": import.meta.env.VITE_API_KEY,
+          "X-RapidAPI-Host": "typewise-ai.p.rapidapi.com",
+        },
+        data: {
+          text: content,
+          keyboard: "QWERTY",
+          languages: ["en"],
+        },
+      });
       const updatedText = response.data.corrected_text;
       if (response) {
-        const editor = new Quill(editorRef.current, editorOptions);
+        const editor = new Quill(editorRef.current, {
+          modules: {
+            toolbar: toolbarOptions,
+            history: {
+              delay: 2000,
+              maxStack: 500,
+              userOnly: true,
+            },
+          },
+          theme: "snow",
+        });
         editor.setContents([{ insert: updatedText }]);
       }
-      // setContent(response.data.corrected_text);
     } catch (error) {
       console.error(error);
     }
@@ -79,9 +84,9 @@ const Editor = () => {
   return (
     <>
       <div ref={editorRef} />
-      <div>{content}</div>
       <button onClick={correctSentence}>Correct Sentence </button>
       <button onClick={generatePDF}>Generate PDF</button>
+      <button onClick={handleCopyToClipboard}>Copy text</button>
     </>
   );
 };
