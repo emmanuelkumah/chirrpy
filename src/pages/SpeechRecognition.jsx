@@ -18,44 +18,49 @@ const SpeechRecogntion = () => {
   }, [content]);
 
   //grammer
-  const encodedParams = new URLSearchParams();
-  encodedParams.set("text", "Him pencl is un the table");
+  // const encodedParams = new URLSearchParams();
+  // encodedParams.set("text", "Him pencl is un the table");
 
-  const options = {
-    method: "POST",
-    url: "https://textgears-textgears-v1.p.rapidapi.com/grammar",
-    headers: {
-      "content-type": "application/x-www-form-urlencoded",
-      "X-RapidAPI-Key": "b83c549ad8msh7858eac60fba4c7p1c2c58jsnd1c568e3a836",
-      "X-RapidAPI-Host": "textgears-textgears-v1.p.rapidapi.com",
-    },
-    data: encodedParams,
-  };
+  // const options = {
+  //   method: "POST",
+  //   url: "https://textgears-textgears-v1.p.rapidapi.com/grammar",
+  //   headers: {
+  //     "content-type": "application/x-www-form-urlencoded",
+  //     "X-RapidAPI-Key": "b83c549ad8msh7858eac60fba4c7p1c2c58jsnd1c568e3a836",
+  //     "X-RapidAPI-Host": "textgears-textgears-v1.p.rapidapi.com",
+  //   },
+  //   data: encodedParams,
+  // };
 
   useEffect(() => {
-    connectAPI();
+    // connectAPI();
+    //languageToolsChecker();
   }, []);
 
-  const connectAPI = async () => {
-    try {
-      const response = await axios.request(options);
-      //console.log(response.data.response.errors);
+  // const connectAPI = async () => {
+  //   try {
+  //     const data = await axios.request(options);
+  //     console.log(data.data.response.errors);
 
-      //const data = (response.data.response.errors);
-      setData(response.data.response.errors);
-    } catch (error) {
-      console.error(error);
-    }
-  };
+  //     const foundErrors = data.data.response.errors;
+  //     const ans = foundErrors.map((error) =>
+  //       error.bad.replace(error.bad, error.better[0])
+  //     );
+  //     console.log(ans);
+  //   } catch (error) {
+  //     console.error(error);
+  //   }
+  // };
 
   //grammar
   //  console.log(data);
-  const fetchCorrectedGrammar = data.map((item) => item.better[0]);
+  // const fetchCorrectedGrammar = data.map((item) => item.better[0]);
 
-  console.log(fetchCorrectedGrammar.join(" "));
-  recognition.continous = true;
-  recognition.lang = "en-US";
+  // console.log(fetchCorrectedGrammar.join(" "));
+  // recognition.continous = true;
+  // recognition.lang = "en-US";
 
+ 
   //start recognition
   recognition.onstart = () => {
     setStatus("Voice recognition activated. Try speaking into the microphone.");
