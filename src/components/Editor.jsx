@@ -3,6 +3,7 @@ import Quill from "quill";
 import { pdfExporter } from "quill-to-pdf";
 import axios from "axios";
 import toolbarOptions from "../utils/editorToolbarOptions";
+import Emotions from "./Emotions";
 
 const Editor = () => {
   const localStorageData = localStorage.getItem("details");
@@ -10,6 +11,7 @@ const Editor = () => {
   const [content, setContent] = useState(localStorageData);
   const [quillContent, setQuillContent] = useState();
   const [copyText, setCopyText] = useState();
+  const [showEmotions, setShowEmotions] = useState(false);
   const editorRef = useRef(null);
 
   useEffect(() => {
@@ -81,12 +83,20 @@ const Editor = () => {
       console.error(error);
     }
   };
+
+  //display Emotions component
+  const handleEmotionDetections = () => {
+    setShowEmotions(true);
+  };
   return (
     <>
       <div ref={editorRef} />
       <button onClick={correctSentence}>Correct Sentence </button>
       <button onClick={generatePDF}>Generate PDF</button>
       <button onClick={handleCopyToClipboard}>Copy text</button>
+      <button onClick={handleEmotionDetections}>Detect Emotions</button>
+
+      {showEmotions && <Emotions content={content} />}
     </>
   );
 };
