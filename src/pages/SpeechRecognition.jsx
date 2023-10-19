@@ -3,13 +3,11 @@ import axios from "axios";
 
 import { recognition } from "../services/speechRecognition";
 import { Link, useOutletContext } from "react-router-dom";
-// import { useQuill } from "react-quilljs";
 import "quill/dist/quill.snow.css";
 
 const SpeechRecogntion = () => {
   const [status, setStatus] = useState("Click the microphone to get started");
   const [hasUpdated, setHasUpdated] = useState(false);
-  //get context data
   const [content, setContent] = useOutletContext();
   const [data, setData] = useState([]);
 
@@ -17,50 +15,11 @@ const SpeechRecogntion = () => {
     localStorage.setItem("details", content);
   }, [content]);
 
-  //grammer
-  // const encodedParams = new URLSearchParams();
-  // encodedParams.set("text", "Him pencl is un the table");
+  // useEffect(() => {
+  //   // connectAPI();
+  //   //languageToolsChecker();
+  // }, []);
 
-  // const options = {
-  //   method: "POST",
-  //   url: "https://textgears-textgears-v1.p.rapidapi.com/grammar",
-  //   headers: {
-  //     "content-type": "application/x-www-form-urlencoded",
-  //     "X-RapidAPI-Key": "b83c549ad8msh7858eac60fba4c7p1c2c58jsnd1c568e3a836",
-  //     "X-RapidAPI-Host": "textgears-textgears-v1.p.rapidapi.com",
-  //   },
-  //   data: encodedParams,
-  // };
-
-  useEffect(() => {
-    // connectAPI();
-    //languageToolsChecker();
-  }, []);
-
-  // const connectAPI = async () => {
-  //   try {
-  //     const data = await axios.request(options);
-  //     console.log(data.data.response.errors);
-
-  //     const foundErrors = data.data.response.errors;
-  //     const ans = foundErrors.map((error) =>
-  //       error.bad.replace(error.bad, error.better[0])
-  //     );
-  //     console.log(ans);
-  //   } catch (error) {
-  //     console.error(error);
-  //   }
-  // };
-
-  //grammar
-  //  console.log(data);
-  // const fetchCorrectedGrammar = data.map((item) => item.better[0]);
-
-  // console.log(fetchCorrectedGrammar.join(" "));
-  // recognition.continous = true;
-  // recognition.lang = "en-US";
-
- 
   //start recognition
   recognition.onstart = () => {
     setStatus("Voice recognition activated. Try speaking into the microphone.");
@@ -88,13 +47,13 @@ const SpeechRecogntion = () => {
     recognition.stop();
   };
 
-  //get resutls
+  //get results of audio recording
   recognition.onresult = (e) => {
     const current = e.resultIndex;
     const transcript = e.results[current][0].transcript;
-    const mobileRepeatBug =
+    const fixRepeatBug =
       current == 1 && transcript == e.results[0][0].transcript;
-    if (!mobileRepeatBug) {
+    if (!fixRepeatBug) {
       setContent((content) => `${content} ${transcript}`);
       setHasUpdated(true);
     }

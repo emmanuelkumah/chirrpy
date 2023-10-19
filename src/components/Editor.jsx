@@ -11,11 +11,11 @@ const Editor = () => {
   const localStorageData = localStorage.getItem("details");
 
   const [content, setContent] = useState(localStorageData);
-  const [quillContent, setQuillContent] = useState();
   const [copyText, setCopyText] = useState();
   const [showEmotions, setShowEmotions] = useState(false);
   const [editorContent, setEditorContent] = useState(null);
-  const [wordDocument, setWordDocument] = useState(null);
+  const [quillEditor, setQuillEditor] = useState();
+
   const editorRef = useRef(null);
 
   useEffect(() => {
