@@ -1,6 +1,8 @@
 import React, { useEffect, useState, useRef } from "react";
 import Quill from "quill";
 import { pdfExporter } from "quill-to-pdf";
+import { generateWord } from "quill-to-word";
+import { saveAs } from "file-saver";
 import axios from "axios";
 import toolbarOptions from "../utils/editorToolbarOptions";
 import Emotions from "./Emotions";
@@ -12,6 +14,8 @@ const Editor = () => {
   const [quillContent, setQuillContent] = useState();
   const [copyText, setCopyText] = useState();
   const [showEmotions, setShowEmotions] = useState(false);
+  const [editorContent, setEditorContent] = useState(null);
+  const [wordDocument, setWordDocument] = useState(null);
   const editorRef = useRef(null);
 
   useEffect(() => {
@@ -26,6 +30,7 @@ const Editor = () => {
       },
       theme: "snow",
     });
+    setEditorContent(editor);
     editor.setContents([{ insert: content }]);
     editor.on("text-change", () => handleEditorChange(editor));
   }, []);
@@ -42,9 +47,19 @@ const Editor = () => {
 
   //generate pdf
   const generatePDF = async () => {
-    const pdfBlob = await pdfExporter.generatePdf(quillContent.getContents());
+    const pdfBlob = await pdfExporter.generatePdf(editorContent.getContents());
     const pdfUrl = URL.createObjectURL(pdfBlob);
     window.open(pdfUrl);
+  };
+
+  //export quill editor to word docx
+  const exportToWord = async () => {
+    const delta = editorContent.getContents();
+    const quillToWordConfig = {
+      exportAs: "blob",
+    };
+    const docsAsBlob = await generateWord(delta, quillToWordConfig);
+    saveAs(docsAsBlob, "word-export.docx");
   };
 
   //correct grammar errors in editor
@@ -88,6 +103,7 @@ const Editor = () => {
   const handleEmotionDetections = () => {
     setShowEmotions(true);
   };
+
   return (
     <>
       <div ref={editorRef} />
@@ -95,7 +111,9 @@ const Editor = () => {
       <button onClick={generatePDF}>Generate PDF</button>
       <button onClick={handleCopyToClipboard}>Copy text</button>
       <button onClick={handleEmotionDetections}>Detect Emotions</button>
-
+      <button onClick={exportToWord}>Export to Word</button>
+      {/* <button onClick={downloadWordDocument}>Download Doc</button> */}
+      {/* {wordDocument && <p>wordDoc: {wordDocument}</p>} */}
       {showEmotions && <Emotions content={content} />}
     </>
   );
